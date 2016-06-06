@@ -72,7 +72,7 @@ public class XML_Wil {
          * @param body the body to set
          */
         public void setBody(String body) {
-            this.body = body;
+            this.body = body.replaceAll("\\<.*?>","");
         }
     }
     
