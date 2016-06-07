@@ -162,6 +162,7 @@ public class XML_Wil {
     public static void main(String[] args) {
         Wil wil;
         List<H1> list;
+        int total = 0;
         
         try{
             JAXBContext context = JAXBContext.newInstance(Wil.class);
@@ -169,10 +170,15 @@ public class XML_Wil {
             wil = (Wil) unMarshaller.unmarshal(new FileInputStream("C:\\src_sanskrit\\wil.xml"));
             list = wil.getH1();
             System.out.println("size="+list.size());
+            
+            for(Object obj: list){
+                H1 h1 = (H1)obj;
+                total +=h1.getBody().length() + h1.getH().getKey1().length();
+            }
         }catch(Exception e){
             e.printStackTrace();
         }
-        
+        System.out.println("total="+total);
     }
     
     
