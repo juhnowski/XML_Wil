@@ -12,9 +12,14 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlMixed;
 import javax.xml.bind.annotation.XmlRootElement;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 
 public class XML_Wil {
 
@@ -41,7 +46,7 @@ public class XML_Wil {
         @XmlElement(name = "h")
         private H h;
         
-        @XmlElement(name = "body")
+        @XmlAnyElement(BodyDomHandler.class)
         private String body;
         
         @XmlElement(name = "tail")
@@ -72,7 +77,7 @@ public class XML_Wil {
          * @param body the body to set
          */
         public void setBody(String body) {
-            this.body = body.replaceAll("\\<.*?>","");
+            this.body = body;
         }
     }
     
@@ -163,6 +168,9 @@ public class XML_Wil {
         Wil wil;
         List<H1> list;
         int total = 0;
+        int h_b = 0;
+        int b = 0;
+        int h = 0;
         
         try{
             JAXBContext context = JAXBContext.newInstance(Wil.class);
@@ -173,12 +181,19 @@ public class XML_Wil {
             
             for(Object obj: list){
                 H1 h1 = (H1)obj;
-                total +=h1.getBody().length() + h1.getH().getKey1().length();
+                h_b +=h1.getBody().length() + h1.getH().getKey1().length();
+                
+                h += h1.getH().getKey1().length();
+                //System.out.println("key=" + h1.getH().getKey1());
+                b += h1.getBody().length();
             }
+            
         }catch(Exception e){
             e.printStackTrace();
         }
-        System.out.println("total="+total);
+        System.out.println("h="+h);
+        System.out.println("b="+b);
+        System.out.println("h_b="+h_b);
     }
     
     
